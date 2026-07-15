@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background-color: #f3f2ed;
+  color: #132a31;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Synligt tangentbordsfokus – tillgänglighetsbaseline */
+:focus-visible {
+  outline: 2px solid #2e6f63;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Ta bort fokusring vid musklick, behåll för tangentbord */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+::selection {
+  background-color: #2e6f63;
+  color: #f3f2ed;
+}
+
+/* Tunn hairline i sandstenston */
+.hairline {
+  border-color: #d8d4c8;
+}
