@@ -17,7 +17,7 @@ const LINES: Line[] = [
 /**
  * Signaturelement: "Kostnadsöversyn" som ett instrument.
  * En tunn scan-linje går igenom posterna och sätter status "Granskad",
- * en i taget — en visuell översättning av kärnkonceptet: vi går igenom
+ * en i taget, en visuell översättning av kärnkonceptet: vi går igenom
  * det ni redan betalar. Inga priser, inga siffror, inga påhittade case.
  * Respekterar prefers-reduced-motion (visar sluttillstånd direkt).
  */
@@ -135,7 +135,7 @@ export default function ReviewPanel() {
       <div className="border-t border-[#e7e3d8] px-5 py-3">
         <p className="font-mono text-[11px] leading-relaxed text-slate">
           {done
-            ? "Ni får en sammanställning i klartext — inget säljsnack."
+            ? "Ni får en sammanställning i klartext, inget säljsnack."
             : "Vi jämför mot vad som faktiskt finns på marknaden."}
         </p>
       </div>

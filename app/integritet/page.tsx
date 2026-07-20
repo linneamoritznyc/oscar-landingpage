@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Integritetspolicy — Nordkom",
+  title: "Integritetspolicy · Nordkom",
   description:
     "Så behandlar Nordkom personuppgifter enligt GDPR. Kort och sakligt.",
   robots: { index: false, follow: false },

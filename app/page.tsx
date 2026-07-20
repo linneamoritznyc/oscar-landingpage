@@ -76,7 +76,7 @@ function Hero() {
           </h1>
           <p className="mt-6 max-w-prose text-[17px] leading-relaxed text-slate">
             Nordkom går igenom vad ni redan betalar för mobilabonnemang, växel,
-            hemsida och SEO — jämför mot vad som faktiskt finns på marknaden och
+            hemsida och SEO. Vi jämför mot vad som faktiskt finns på marknaden och
             säger rakt ut om det går att göra bättre. Ingen agenda, inga priser
             på den här sidan. Bara en ärlig genomgång.
           </p>
@@ -134,7 +134,7 @@ function WhatWeReview() {
         <div className="max-w-prose">
           <SectionLabel>Det vi ser över</SectionLabel>
           <h2 className="mt-4 font-display text-[clamp(1.5rem,3.5vw,2.15rem)] font-semibold leading-tight tracking-[-0.015em] text-ink">
-            Fyra poster i samma genomgång — inte fyra saker vi vill sälja
+            Fyra poster i samma genomgång, inte fyra saker vi vill sälja
           </h2>
           <p className="mt-4 text-[16px] leading-relaxed text-slate">
             De flesta av de här kostnaderna hänger ihop. Därför tittar vi på dem
@@ -179,14 +179,14 @@ function SecondOpinion() {
           <div className="max-w-prose space-y-5 text-[16px] leading-relaxed text-slate">
             <p>
               Företag betalar ofta för mycket för telefoni utan att veta om det.
-              Inte för att någon slarvat — utan för att avtalen är ogenomskinliga,
+              Inte för att någon slarvat, utan för att avtalen är ogenomskinliga,
               villkoren ändras vid förlängning och ingen internt har tid att gå
               igenom raderna mot vad marknaden ser ut som idag.
             </p>
             <p>
               Nordkom gör det jobbet åt er. Vi säljer ingen abonnemangsjakt över
               telefon. Vi läser igenom det ni redan har, jämför sakligt och
-              berättar var det finns något att hämta — och lika gärna när ni
+              berättar var det finns något att hämta, och lika gärna när ni
               redan har ett bra upplägg.
             </p>
             <p className="text-ink">
@@ -204,7 +204,7 @@ function SecondOpinion() {
             },
             {
               k: "Vi jämför sakligt",
-              v: "Mot vad som finns på marknaden nu — utan att ni behöver byta något för sakens skull.",
+              v: "Mot vad som finns på marknaden nu, utan att ni behöver byta något för sakens skull.",
             },
             {
               k: "Ni får beslutsunderlag",
@@ -242,7 +242,7 @@ function ContactSection() {
             </h2>
             <p className="mt-5 max-w-sm text-[16px] leading-relaxed text-[#c3ccca]">
               Det här är ingen anmälan till en säljlista. Vi hör av oss för att
-              boka in en kort genomgång — och ni avgör därefter om det är värt
+              boka in en kort genomgång, och ni avgör därefter om det är värt
               att gå vidare.
             </p>
             <p className="mt-8 font-mono text-[12px] leading-relaxed text-[#8fb3aa]">

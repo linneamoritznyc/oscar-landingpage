@@ -26,15 +26,15 @@ const siteUrl = "https://nordkom.se";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Nordkom — Kostnadsöversyn för företag",
+  title: "Nordkom: Kostnadsöversyn för företag",
   description:
-    "Nordkom går igenom vad ert företag betalar för mobilabonnemang, växel, hemsida och SEO — och säger rakt ut om ni betalar för mycket. En second opinion, inte en säljpitch.",
+    "Nordkom går igenom vad ert företag betalar för mobilabonnemang, växel, hemsida och SEO, och säger rakt ut om ni betalar för mycket. En second opinion, inte en säljpitch.",
   applicationName: "Nordkom",
   authors: [{ name: "Nordkom" }],
   openGraph: {
-    title: "Nordkom — Kostnadsöversyn för företag",
+    title: "Nordkom: Kostnadsöversyn för företag",
     description:
-      "Vi går igenom vad ni redan betalar för företagstelefoni, växel, hemsida och SEO — och säger om ni betalar för mycket.",
+      "Vi går igenom vad ni redan betalar för företagstelefoni, växel, hemsida och SEO, och säger om ni betalar för mycket.",
     url: siteUrl,
     siteName: "Nordkom",
     locale: "sv_SE",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Nordkom — Kostnadsöversyn för företag",
+        alt: "Nordkom: Kostnadsöversyn för företag",
       },
     ],
   },

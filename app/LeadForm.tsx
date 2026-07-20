@@ -94,7 +94,7 @@ export default function LeadForm() {
             />
           </svg>
         </div>
-        <p className="font-display text-lg text-ink">Tack — vi hör av oss inom kort.</p>
+        <p className="font-display text-lg text-ink">Tack, vi hör av oss inom kort.</p>
         <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-slate">
           Vi läser igenom er förfrågan och återkommer med nästa steg. Ni behöver
           inte göra något mer just nu.
@@ -149,7 +149,7 @@ export default function LeadForm() {
           name="meddelande"
           rows={3}
           className="w-full resize-none rounded-md border border-[#d8d4c8] bg-white/70 px-3.5 py-2.5 text-[15px] text-ink placeholder:text-slate/50 transition-colors focus:border-pine focus:bg-white"
-          placeholder="Kort om er situation — t.ex. antal anställda eller vad som känns oklart i era avtal."
+          placeholder="Kort om er situation, t.ex. antal anställda eller vad som känns oklart i era avtal."
         />
       </div>
 
