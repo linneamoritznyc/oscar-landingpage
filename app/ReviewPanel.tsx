@@ -61,12 +61,17 @@ export default function ReviewPanel() {
   return (
     <figure
       className="relative overflow-hidden rounded-md border border-[#d8d4c8] bg-white/60 shadow-[0_1px_0_rgba(19,42,49,0.04),0_20px_40px_-32px_rgba(19,42,49,0.5)]"
-      aria-label="Illustration: en kostnadsöversyn där posterna granskas en i taget"
+      aria-label="Exempel som visar hur en kostnadsöversyn går till: posterna granskas en i taget"
     >
       {/* Instrumentets rubrikrad */}
       <figcaption className="flex items-center justify-between border-b border-[#e7e3d8] px-5 py-3">
-        <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-slate">
-          Kostnadsöversyn
+        <span className="flex items-center gap-2.5">
+          <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-slate">
+            Kostnadsöversyn
+          </span>
+          <span className="rounded-[3px] border border-[#d3cfc2] px-1.5 py-0.5 font-mono text-[9.5px] uppercase tracking-[0.12em] text-slate/80">
+            Exempel
+          </span>
         </span>
         <span
           className="flex items-center gap-2 font-mono text-[11px] text-slate"
@@ -78,7 +83,7 @@ export default function ReviewPanel() {
             }`}
             aria-hidden="true"
           />
-          {done ? "Genomgången klar" : "Pågår"}
+          {done ? "Så ser resultatet ut" : "Så går det till"}
         </span>
       </figcaption>
 

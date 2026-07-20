@@ -108,18 +108,22 @@ function Hero() {
 const REVIEW_ITEMS = [
   {
     title: "Mobilabonnemang",
+    icon: "sim" as const,
     body: "Företagsabonnemang hos Tre, Telenor, Telia och Tele2. Vi ser över vad ni betalar per anställd, bindningstider och om upplägget passar hur ni faktiskt jobbar.",
   },
   {
     title: "Företagsväxel",
+    icon: "pbx" as const,
     body: "Hur samtal styrs, vad växeln kostar att driva och vilka funktioner ni betalar för men inte använder. Ofta det som är svårast att genomskåda i avtalen.",
   },
   {
     title: "Hemsida",
+    icon: "web" as const,
     body: "Driftkostnad, underhåll och bindningstid mot vad ni faktiskt får. Vi säger till om ni sitter fast i något som inte längre motsvarar priset.",
   },
   {
     title: "Sökmotoroptimering",
+    icon: "seo" as const,
     body: "Vad SEO-insatsen kostar ställt mot vad den ger. Kommer rätt kunder in via sök, eller betalar ni för aktivitet utan resultat?",
   },
 ];
@@ -146,8 +150,13 @@ function WhatWeReview() {
         <ul className="mt-10 grid gap-px overflow-hidden rounded-md border border-[#dcd8ca] bg-[#dcd8ca] sm:grid-cols-2">
           {REVIEW_ITEMS.map((item) => (
             <li key={item.title} className="bg-paper p-6 sm:p-7">
-              <div className="flex items-baseline gap-3">
-                <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 translate-y-[-2px] rounded-full bg-pine" />
+              <div className="flex items-center gap-3">
+                <span
+                  aria-hidden="true"
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-[#d8d4c8] bg-white/60 text-pine"
+                >
+                  <ReviewIcon name={item.icon} />
+                </span>
                 <h3 className="font-display text-[18px] font-medium text-ink">
                   {item.title}
                 </h3>
@@ -196,7 +205,7 @@ function SecondOpinion() {
           </div>
         </div>
 
-        <div className="mt-12 grid gap-px overflow-hidden rounded-md border border-[#e4e0d4] bg-[#e4e0d4] sm:grid-cols-3">
+        <ol className="mt-12 grid gap-8 sm:grid-cols-3 sm:gap-6">
           {[
             {
               k: "Vi läser avtalen",
@@ -210,17 +219,29 @@ function SecondOpinion() {
               k: "Ni får beslutsunderlag",
               v: "En sammanställning i klartext. Vad som kan bli bättre, vad som redan är bra, och nästa steg om ni vill ta det.",
             },
-          ].map((step) => (
-            <div key={step.k} className="bg-paper p-6">
-              <p className="font-display text-[15px] font-medium text-ink">
+          ].map((step, i, arr) => (
+            <li key={step.k} className="relative">
+              <div className="flex items-center gap-3">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-pine/40 font-mono text-[13px] text-pine">
+                  {i + 1}
+                </span>
+                {/* Kopplande linje mellan stegen (döljs på sista + i mobil-stapel) */}
+                {i < arr.length - 1 && (
+                  <span
+                    aria-hidden="true"
+                    className="hidden h-px flex-1 bg-gradient-to-r from-pine/30 to-transparent sm:block"
+                  />
+                )}
+              </div>
+              <p className="mt-4 font-display text-[15px] font-medium text-ink">
                 {step.k}
               </p>
               <p className="mt-2 text-[14px] leading-relaxed text-slate">
                 {step.v}
               </p>
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </div>
     </section>
   );
@@ -325,4 +346,60 @@ function Arrow() {
       />
     </svg>
   );
+}
+
+/* Tunna, kategorispecifika ikoner – inte generiska checkbox-i-cirkel. */
+function ReviewIcon({ name }: { name: "sim" | "pbx" | "web" | "seo" }) {
+  const common = {
+    width: 18,
+    height: 18,
+    viewBox: "0 0 20 20",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.4,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    "aria-hidden": true,
+  };
+  switch (name) {
+    // SIM-kort – telekom-specifikt, inte en generisk telefon
+    case "sim":
+      return (
+        <svg {...common}>
+          <path d="M5 3h6.5L15 6.5V17H5z" />
+          <rect x="7.5" y="9.5" width="5" height="5" rx="0.8" />
+          <path d="M10 9.5v5M7.5 12h5" />
+        </svg>
+      );
+    // Företagsväxel – en central nod som ruttar samtal till flera
+    case "pbx":
+      return (
+        <svg {...common}>
+          <circle cx="10" cy="10" r="2" />
+          <circle cx="4" cy="4.5" r="1.4" />
+          <circle cx="16" cy="4.5" r="1.4" />
+          <circle cx="4" cy="15.5" r="1.4" />
+          <circle cx="16" cy="15.5" r="1.4" />
+          <path d="M8.4 8.6 5.1 5.6M11.6 8.6l3.3-3M8.4 11.4l-3.3 3M11.6 11.4l3.3 3" />
+        </svg>
+      );
+    // Hemsida – webbläsarfönster
+    case "web":
+      return (
+        <svg {...common}>
+          <rect x="3" y="4" width="14" height="12" rx="1.5" />
+          <path d="M3 7.5h14" />
+          <path d="M5.3 5.75h.01M7 5.75h.01" />
+        </svg>
+      );
+    // SEO – förstoringsglas över stigande staplar
+    case "seo":
+      return (
+        <svg {...common}>
+          <path d="M6 14v-2M9.5 14V9M13 14v-3.5" />
+          <circle cx="11.5" cy="7.5" r="3.2" />
+          <path d="m14 10 2.5 2.5" />
+        </svg>
+      );
+  }
 }
