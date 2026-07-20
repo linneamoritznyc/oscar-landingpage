@@ -1,19 +1,9 @@
 import { NextResponse } from "next/server";
 
-// TODO: Byt ut mot riktig Google Apps Script Web App-URL
-const GOOGLE_SHEET_WEBHOOK_URL = "REPLACE_ME";
-
-/**
- * Så länge GOOGLE_SHEET_WEBHOOK_URL === "REPLACE_ME" skickas ingen lead vidare.
- * Vi loggar bara datan på servern (console.log) och svarar 200 OK, så att
- * formuläret går att testa end-to-end innan Sheet-webhooken är på plats.
- * Byt konstanten ovan mot den riktiga URL:en så börjar POST:en gå iväg.
- */
-
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// Externt CRM (Oscars egna system). Hemligheten läses från env och får
-// ALDRIG hårdkodas eller exponeras i klientkod – detta körs enbart server-side.
+// Externt CRM (VarmLead). Hemligheten läses från env och får ALDRIG hårdkodas
+// eller exponeras i klientkod – detta körs enbart server-side.
 const CRM_WEBHOOK_URL =
   "https://oscar-email-warmup.vercel.app/api/webhooks/contact-form";
 
@@ -29,10 +19,10 @@ function asString(v: unknown): string {
 }
 
 /**
- * Skickar leaden vidare till vårt CRM via webhook.
+ * Skickar leaden vidare till vårt CRM (VarmLead) via webhook.
  * Wrap:ad så att ett misslyckat anrop (nätverksfel, CRM nere, saknad secret)
  * ALDRIG blockerar eller kraschar formulär-svaret till användaren – vi loggar
- * bara felet och går vidare. Körs server-side, aldrig i browsern.
+ * bara utfallet och går vidare. Körs server-side, aldrig i browsern.
  */
 async function forwardToCrm(form: {
   name: string;
@@ -66,7 +56,9 @@ async function forwardToCrm(form: {
       }),
     });
 
-    if (!res.ok) {
+    if (res.ok) {
+      console.log("[lead] CRM tog emot leaden (status", res.status + ").");
+    } else {
       console.error("[lead] CRM-webhook svarade med status", res.status);
     }
   } catch (err) {
@@ -107,14 +99,6 @@ export async function POST(request: Request) {
     );
   }
 
-  const lead = {
-    namn,
-    epost,
-    telefon,
-    meddelande,
-    mottagen: new Date().toISOString(),
-  };
-
   // Skicka vidare till CRM (server-side, secret från env). Fire-and-forget:
   // vi väntar INTE in svaret innan vi kvitterar till besökaren – ett fel eller
   // en långsam/nere CRM-endpoint får aldrig blockera eller krascha formuläret.
@@ -128,34 +112,13 @@ export async function POST(request: Request) {
     service: undefined,
   }).catch(() => {});
 
-  // Placeholder-läge: ingen webhook konfigurerad ännu.
-  if (GOOGLE_SHEET_WEBHOOK_URL === "REPLACE_ME") {
-    console.log("[lead] Ny förfrågan (webhook ej konfigurerad):", lead);
-    return NextResponse.json({ ok: true }, { status: 200 });
-  }
+  console.log("[lead] Ny förfrågan mottagen:", {
+    namn,
+    epost,
+    telefon,
+    meddelande,
+    mottagen: new Date().toISOString(),
+  });
 
-  // Skarpt läge: skicka vidare till Google Apps Script Web App.
-  try {
-    const res = await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(lead),
-    });
-
-    if (!res.ok) {
-      console.error("[lead] Webhook svarade med status", res.status);
-      return NextResponse.json(
-        { error: "Kunde inte ta emot förfrågan just nu." },
-        { status: 502 },
-      );
-    }
-
-    return NextResponse.json({ ok: true }, { status: 200 });
-  } catch (err) {
-    console.error("[lead] Fel vid anrop till webhook:", err);
-    return NextResponse.json(
-      { error: "Kunde inte ta emot förfrågan just nu." },
-      { status: 502 },
-    );
-  }
+  return NextResponse.json({ ok: true }, { status: 200 });
 }
