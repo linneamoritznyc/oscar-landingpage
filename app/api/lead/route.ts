@@ -12,6 +12,11 @@ const GOOGLE_SHEET_WEBHOOK_URL = "REPLACE_ME";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// Externt CRM (Oscars egna system). Hemligheten läses från env och får
+// ALDRIG hårdkodas eller exponeras i klientkod – detta körs enbart server-side.
+const CRM_WEBHOOK_URL =
+  "https://oscar-email-warmup.vercel.app/api/webhooks/contact-form";
+
 type LeadPayload = {
   namn?: unknown;
   epost?: unknown;
@@ -21,6 +26,52 @@ type LeadPayload = {
 
 function asString(v: unknown): string {
   return typeof v === "string" ? v.trim() : "";
+}
+
+/**
+ * Skickar leaden vidare till vårt CRM via webhook.
+ * Wrap:ad så att ett misslyckat anrop (nätverksfel, CRM nere, saknad secret)
+ * ALDRIG blockerar eller kraschar formulär-svaret till användaren – vi loggar
+ * bara felet och går vidare. Körs server-side, aldrig i browsern.
+ */
+async function forwardToCrm(form: {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+  service?: string;
+}): Promise<void> {
+  const secret = process.env.CRM_INBOUND_SECRET;
+  if (!secret) {
+    console.warn(
+      "[lead] CRM_INBOUND_SECRET saknas – hoppar över CRM-forward.",
+    );
+    return;
+  }
+
+  try {
+    const res = await fetch(CRM_WEBHOOK_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-inbound-secret": secret,
+      },
+      body: JSON.stringify({
+        source_key: "nordkom",
+        email: form.email, // required
+        phone: form.phone, // strongly recommended
+        name: form.name, // optional
+        message: form.message, // optional
+        service: form.service, // optional
+      }),
+    });
+
+    if (!res.ok) {
+      console.error("[lead] CRM-webhook svarade med status", res.status);
+    }
+  } catch (err) {
+    console.error("[lead] Fel vid anrop till CRM-webhook:", err);
+  }
 }
 
 export async function POST(request: Request) {
@@ -63,6 +114,19 @@ export async function POST(request: Request) {
     meddelande,
     mottagen: new Date().toISOString(),
   };
+
+  // Skicka vidare till CRM (server-side, secret från env). Fire-and-forget:
+  // vi väntar INTE in svaret innan vi kvitterar till besökaren – ett fel eller
+  // en långsam/nere CRM-endpoint får aldrig blockera eller krascha formuläret.
+  // (forwardToCrm sväljer sina egna fel; .catch är bara en extra säkerhet.)
+  void forwardToCrm({
+    name: namn,
+    email: epost,
+    phone: telefon,
+    message: meddelande,
+    // Formuläret samlar inte in något "service"-fält i v1 -> lämnas tomt.
+    service: undefined,
+  }).catch(() => {});
 
   // Placeholder-läge: ingen webhook konfigurerad ännu.
   if (GOOGLE_SHEET_WEBHOOK_URL === "REPLACE_ME") {
